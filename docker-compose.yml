@@ -1,0 +1,61 @@
+services:
+  preview:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: rezeck/orbbec-astra-pro:noetic
+    container_name: astra-pro-preview
+    privileged: true
+    network_mode: host
+    ipc: host
+    stdin_open: true
+    tty: true
+    environment:
+      - DISPLAY=${DISPLAY:-:0}
+      - QT_X11_NO_MITSHM=1
+      - ROS_MASTER_URI=http://127.0.0.1:11311
+      - ROS_HOSTNAME=127.0.0.1
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=graphics,utility,compute
+      - LIBGL_ALWAYS_SOFTWARE=1
+      - GALLIUM_DRIVER=llvmpipe
+      - OGRE_RTT_MODE=Copy
+    volumes:
+      - .:/workspace
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ${XAUTHORITY:-$HOME/.Xauthority}:/root/.Xauthority:rw
+      - /dev:/dev
+    devices:
+      - /dev/bus/usb:/dev/bus/usb
+    gpus: all
+    working_dir: /workspace
+    command: ["/workspace/scripts/start_preview.sh"]
+    stop_grace_period: 10s
+
+  # Interactive shell against the same image (does not auto-start the camera)
+  shell:
+    profiles: ["dev"]
+    image: rezeck/orbbec-astra-pro:noetic
+    container_name: astra-pro-shell
+    privileged: true
+    network_mode: host
+    ipc: host
+    stdin_open: true
+    tty: true
+    environment:
+      - DISPLAY=${DISPLAY:-:0}
+      - QT_X11_NO_MITSHM=1
+      - ROS_MASTER_URI=http://127.0.0.1:11311
+      - ROS_HOSTNAME=127.0.0.1
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=graphics,utility,compute
+    volumes:
+      - .:/workspace
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ${XAUTHORITY:-$HOME/.Xauthority}:/root/.Xauthority:rw
+      - /dev:/dev
+    devices:
+      - /dev/bus/usb:/dev/bus/usb
+    gpus: all
+    working_dir: /workspace
+    command: ["bash"]

@@ -30,13 +30,24 @@ lsusb | grep -i 2bc5
 # deve aparecer Astra Pro (0403) e Astra Pro HD Camera (0501)
 ```
 
-## Rodar preview
+## Rodar com Docker Compose
 
 ```bash
+# sobe imagem + compila workspace (1ª vez) + abre RViz/rqt
 ./scripts/preview.sh
+
+# equivalente:
+# docker compose up --build
 ```
 
-Isso sobe um container `osrf/ros:noetic-desktop-full`, compila `astra_camera` + `astra_pro_bringup` e abre:
+Ou em background:
+
+```bash
+docker compose up --build -d
+docker compose logs -f preview
+```
+
+Isso usa `Dockerfile` (`osrf/ros:noetic-desktop-full` + libuvc + deps), monta o repo em `/workspace` e roda `scripts/start_preview.sh`.
 
 | Janela | Conteúdo |
 |--------|----------|
@@ -48,6 +59,14 @@ Parar:
 
 ```bash
 ./scripts/stop.sh
+# ou: docker compose down
+```
+
+Shell interativo no mesmo ambiente:
+
+```bash
+./scripts/shell.sh
+# ou: docker compose --profile dev run --rm shell
 ```
 
 ## Tópicos principais
@@ -72,6 +91,8 @@ Fixed frame no RViz: `camera_color_optical_frame`.
 
 ```
 ORBBEC-ASTRA-PRO/
+??? Dockerfile
+??? docker-compose.yml
 ??? config/
 ?   ??? camera_info/rgb_camera.yaml
 ?   ??? udev/56-orbbec-usb.rules
@@ -80,8 +101,11 @@ ORBBEC-ASTRA-PRO/
 ?   ??? astra_pro_bringup/    # launch, rviz, brighten
 ??? scripts/
     ??? setup_host.sh
-    ??? preview.sh
+    ??? preview.sh            # docker compose up --build
     ??? stop.sh
+    ??? shell.sh
+    ??? entrypoint.sh
+    ??? start_preview.sh      # roda dentro do container
 ```
 
 ## Licença

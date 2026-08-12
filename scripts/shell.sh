@@ -2,5 +2,5 @@
 set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "${ROOT_DIR}"
-docker compose down --remove-orphans
-echo "[stop] stack down"
+xhost +local:docker >/dev/null 2>&1 || true
+docker compose --profile dev run --rm shell
