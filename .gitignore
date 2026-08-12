@@ -1,0 +1,24 @@
+# Catkin / build
+orbbec_ws/build/
+orbbec_ws/devel/
+orbbec_ws/install/
+orbbec_ws/logs/
+orbbec_ws/.catkin_tools/
+**/__pycache__/
+*.pyc
+
+# ROS / local
+.ros/
+*.bag
+frames.pdf
+frames.gv
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Logs
+*.log
+Log/

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>astra_pro_bringup</name>
+  <version>0.1.0</version>
+  <description>Bringup and visualization for Orbbec Astra Pro (USB OpenNI depth + UVC RGB)</description>
+  <maintainer email="rezeck@users.noreply.github.com">rezeck</maintainer>
+  <license>MIT</license>
+  <buildtool_depend>catkin</buildtool_depend>
+  <exec_depend>astra_camera</exec_depend>
+  <exec_depend>roslaunch</exec_depend>
+  <exec_depend>rviz</exec_depend>
+  <exec_depend>rqt_image_view</exec_depend>
+  <exec_depend>rospy</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+</package>

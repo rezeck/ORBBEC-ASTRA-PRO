@@ -1,0 +1,79 @@
+Panels:
+  - Class: rviz/Displays
+    Name: Displays
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Alpha: 0.25
+      Cell Size: 0.5
+      Class: rviz/Grid
+      Color: 120; 120; 120
+      Enabled: true
+      Name: Grid
+      Plane: XY
+      Plane Cell Count: 16
+      Reference Frame: <Fixed Frame>
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Axis: Z
+      Class: rviz/PointCloud2
+      Color Transformer: AxisColor
+      Decay Time: 0
+      Enabled: true
+      Name: Nuvem XYZ
+      Position Transformer: XYZ
+      Queue Size: 2
+      Selectable: false
+      Size (Pixels): 2
+      Size (m): 0.01
+      Style: Points
+      Topic: /camera/depth/points
+      Use Fixed Frame: true
+      Use rainbow: true
+    - Alpha: 1
+      Class: rviz/PointCloud2
+      Color Transformer: RGB8
+      Decay Time: 0
+      Enabled: true
+      Name: Nuvem Colorida
+      Position Transformer: XYZ
+      Queue Size: 2
+      Selectable: false
+      Size (Pixels): 2
+      Size (m): 0.01
+      Style: Points
+      Topic: /camera/depth_registered/points
+      Use Fixed Frame: true
+  Enabled: true
+  Global Options:
+    Background Color: 40; 40; 40
+    Default Light: true
+    Fixed Frame: camera_color_optical_frame
+    Frame Rate: 20
+  Name: root
+  Tools:
+    - Class: rviz/MoveCamera
+    - Class: rviz/FocusCamera
+    - Class: rviz/Interact
+  Views:
+    Current:
+      Class: rviz/Orbit
+      Distance: 2.5
+      Focal Point:
+        X: 0
+        Y: 0
+        Z: 1.0
+      Name: Current View
+      Near Clip Distance: 0.05
+      Pitch: 0.35
+      Target Frame: <Fixed Frame>
+      Yaw: 3.14
+Window Geometry:
+  Displays:
+    collapsed: true
+  Height: 800
+  Hide Left Dock: true
+  Hide Right Dock: true
+  Width: 1100
+  X: 60
+  Y: 40

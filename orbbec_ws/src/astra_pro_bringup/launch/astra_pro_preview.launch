@@ -1,0 +1,65 @@
+<launch>
+    <!-- Astra Pro: XYZ + XYZRGB clouds in RViz; IR/RGB in rqt_image_view -->
+    <arg name="rviz" default="true"/>
+    <arg name="image_viewers" default="true"/>
+    <arg name="brighten_rgb" default="true"/>
+    <arg name="rviz_config" default="$(find astra_pro_bringup)/rviz/astra_pro_preview.rviz"/>
+
+    <include file="$(find astra_camera)/launch/astra_pro.launch">
+        <arg name="depth_align" value="true"/>
+        <arg name="enable_color" value="true"/>
+        <arg name="enable_depth" value="true"/>
+        <arg name="enable_ir" value="true"/>
+        <arg name="enable_point_cloud" value="true"/>
+        <arg name="enable_point_cloud_xyzrgb" value="true"/>
+        <arg name="color_width" value="640"/>
+        <arg name="color_height" value="480"/>
+        <arg name="color_fps" value="30"/>
+        <arg name="depth_width" value="640"/>
+        <arg name="depth_height" value="480"/>
+        <arg name="depth_fps" value="30"/>
+        <arg name="ir_width" value="640"/>
+        <arg name="ir_height" value="480"/>
+        <arg name="ir_fps" value="30"/>
+        <arg name="use_uvc_camera" value="true"/>
+        <arg name="uvc_camera_format" value="mjpeg"/>
+        <!-- Decimal: 0x2bc5 / 0x0501 — hex strings break libuvc and open the wrong webcam -->
+        <arg name="uvc_vendor_id" value="11205"/>
+        <arg name="uvc_product_id" value="1281"/>
+        <arg name="color_info_uri" value="package://astra_pro_bringup/config/rgb_camera.yaml"/>
+    </include>
+
+    <!-- Software GL avoids NVIDIA+Docker RViz glitches on resize / dock tabs -->
+    <node if="$(arg rviz)"
+          pkg="rviz"
+          type="rviz"
+          name="astra_pro_rviz"
+          args="-d $(arg rviz_config)"
+          output="screen"
+          launch-prefix="bash -c 'export QT_X11_NO_MITSHM=1 OGRE_RTT_MODE=Copy __GL_SYNC_TO_VBLANK=0 __GL_MaxFramesAllowed=1 LIBGL_ALWAYS_SOFTWARE=1 GALLIUM_DRIVER=llvmpipe QT_XCB_GL_INTEGRATION=xcb_egl; sleep 3; exec $0 $@' "/>
+
+    <node if="$(arg image_viewers)"
+          pkg="rqt_image_view"
+          type="rqt_image_view"
+          name="ir_view"
+          args="/camera/ir/image_raw"
+          output="screen"
+          launch-prefix="bash -c 'sleep 4; exec $0 $@' "/>
+
+    <node if="$(arg brighten_rgb)"
+          pkg="astra_pro_bringup"
+          type="color_brighten.py"
+          name="color_brighten"
+          output="screen">
+        <param name="gain" value="1.6"/>
+        <param name="bias" value="18"/>
+    </node>
+
+    <node if="$(arg image_viewers)"
+          pkg="rqt_image_view"
+          type="rqt_image_view"
+          name="rgb_view"
+          args="/camera/color/image_bright"
+          output="screen"
+          launch-prefix="bash -c 'sleep 5; exec $0 $@' "/>
+</launch>
